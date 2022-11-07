@@ -7,7 +7,7 @@ button {
 	border: none;
 	border-radius: 4px;
 	float: right;
-	margin: 10px 30px;
+	margin: 10px 30px 10px 0px;
 }
 
 button:hover {
