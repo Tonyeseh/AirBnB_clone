@@ -95,7 +95,7 @@
 	margin: 20px auto;
 }
 
-/* Background for amenities lists */
+/**/
 .pets {
 	background: #ffffff url("../images/icon_pets.png") no-repeat;
 	background-position: left;
@@ -114,18 +114,18 @@
 	background-size: 10%, 100%;
 }
 
-.kitchen {
-	background: #ffffff url("../images/meal.png") no-repeat;
-	background-position: left;
-	background-size: 10%, 100%;
-}
-
 /* Places header 1 */
 .places h1 {
 	font-size: 30px;
 	font-weight: bold;
 	margin: .67em 0 .67em 0;
 	width: 100%;
+}
+
+@media only screen and (max-width: 1000px) {
+	.places h1 {
+		width: 95%;
+	}
 }
 
 /* Places header 2 */

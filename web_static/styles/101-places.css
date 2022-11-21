@@ -95,7 +95,7 @@
 	margin: 20px auto;
 }
 
-/* Background for amenities lists */
+/**/
 .pets {
 	background: #ffffff url("../images/icon_pets.png") no-repeat;
 	background-position: left;
@@ -110,12 +110,6 @@
 
 .wifi {
 	background: #ffffff url("../images/icon_wifi.png") no-repeat;
-	background-position: left;
-	background-size: 10%, 100%;
-}
-
-.kitchen {
-	background: #ffffff url("../images/meal.png") no-repeat;
 	background-position: left;
 	background-size: 10%, 100%;
 }
