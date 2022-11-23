@@ -4,6 +4,13 @@
 """ Defines the class FileStorage """
 
 import json
+from models.base_model import BaseModel
+from models.state import State
+from models.user import User
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class FileStorage:
@@ -47,13 +54,6 @@ class FileStorage:
         """ Deserialises the JSON file to __objects only if JSON file exits.
             It does nothing otherwise
         """
-        from models.base_model import BaseModel
-        from models.state import State
-        from models.user import User
-        from models.city import City
-        from models.amenity import Amenity
-        from models.place import Place
-        from models.review import Review
         try:
             with open(type(self).__file_path, 'r') as f:
                 text = f.read()
