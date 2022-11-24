@@ -160,16 +160,19 @@ on the class name and id.
                     print("** no instance found **")
                 elif len(args) < 3:
                     print("** attribute name missing **")
+                elif len(args) < 4:
+                    print("** value missing **")
                 else:
                     value = obj.__dict__.get(args[2], None)
-                    if value is None:
-                        print("** value missing **")
+                    new_val = args[3].split("\"")
+                    if len(new_val) != 3 or new_val[2] != '':
+                        pass
                     else:
-                        new_val = args[3].split("\"")
-                        if len(new_val) != 3 or new_val[2] != '':
-                            pass
-                        else:
+                        if value:
                             obj.__dict__[args[2]] = new_val[1]
+                            obj.save()
+                        else:
+                            setattr(obj, args[2], new_val[1])
                             obj.save()
 
     def do_EOF(self, arg):
