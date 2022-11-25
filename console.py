@@ -4,6 +4,7 @@
 """ Entry point for the command interpreter """
 import cmd
 import re
+import json
 from models.base_model import BaseModel
 from models.state import State
 from models.user import User
@@ -55,6 +56,8 @@ class HBNBCommand(cmd.Cmd):
         if method == "update" and attr_or_dict:
             match_dict = re.search(r'^({.*})$', attr_or_dict)
             if match_dict:
+                print("Entered")
+                self.update_dict(classname, uid, match_dict.group(1))
                 return ""
             match_attr_and_value = re.search(r'^(?:"([^"]*)")?(?:, (.*))?$', attr_or_dict)
             if match_attr_and_value:
@@ -207,6 +210,25 @@ on the class name and id.
                         else:
                             setattr(obj, args[2], new_val[1])
                             obj.save()
+
+    def update_dict(self, classname, uid, s_dict):
+        """ Helper method for update() with a dictionary. """
+        s = s_dict.replace("'", '"')
+        d = json.loads(s)
+        if not classname:
+            print("** class name missing **")
+        elif classname not in HBNBCommand.__class_list:
+            print("** class doesn't exist **")
+        elif uid is None:
+            print("** instance id missing **")
+        else:
+            key = "{}.{}".format(classname, uid)
+            if key not in storage.all():
+                print("** no instance found **")
+            else:
+                for attr, value in d.items():
+                    setattr(storage.all()[key], attr, value)
+                storage.all()[key].save()
 
     def do_EOF(self, arg):
         """ Press ^D(Control + D) to exit the program """
