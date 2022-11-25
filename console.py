@@ -43,7 +43,23 @@ class HBNBCommand(cmd.Cmd):
         classname = match.group(1)
         method = match.group(2)
         args = match.group(3)
-        command = method + " " + classname + " " + args
+        uid_and_args = re.search(r'^"([^"]*)"(?:, (.*))?$', args)
+        if uid_and_args:
+            uid = uid_and_args.group(1)
+            attr_or_dict = uid_and_args.group(2)
+        else:
+            uid = args
+            attr_or_dict = False
+
+        attr_and_value = ""
+        if method == "update" and attr_or_dict:
+            match_dict = re.search(r'^({.*})$', attr_or_dict)
+            if match_dict:
+                return ""
+            match_attr_and_value = re.search(r'^(?:"([^"]*)")?(?:, (.*))?$', attr_or_dict)
+            if match_attr_and_value:
+                attr_and_value = match_attr_and_value.group(1) + " " + match_attr_and_value.group(2) 
+        command = method + " " + classname + " " + uid + " " + attr_and_value
         self.onecmd(command)
         return command
 
@@ -162,14 +178,6 @@ on the class name and id.
             Usage:
                 update <class name> <id> <attribute name> "<attribute value>"
         """
-        class_list = [
-            "BaseModel",
-            "User",
-            "State",
-            "Place",
-            "Amenity",
-            "Review",
-            "City"]
         if arg is None or arg == '':
             print("** class name missing **")
         else:
