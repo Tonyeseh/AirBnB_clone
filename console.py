@@ -133,6 +133,28 @@ on the class name and id.
             else:
                 print("** class doesn't exist **")
 
+    def do_count(self, arg):
+        """ counts all objexts of a class
+
+            Usage:
+                count - counts all objects
+                count <class name> - counts all instances of <class name>
+        """
+        if arg is None or arg == '':
+            print(len(storage.all().items()))
+        else:
+            if arg in HBNBCommand.__class_list:
+                count = 0
+                for k, v in storage.all().items():
+                    class_name = k.split('.')
+                    if class_name[0] == arg:
+                        count += 1
+                    else:
+                        pass
+                print(count)
+            else:
+                print("** class doesn't exist **")
+
     def do_update(self, arg):
         """ Updates an instance based on the class name and id by
         adding or updating attribute(save the chaneg into the JSON file)
