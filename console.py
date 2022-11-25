@@ -43,7 +43,7 @@ class HBNBCommand(cmd.Cmd):
         classname = match.group(1)
         method = match.group(2)
         args = match.group(3)
-        command = method + " " + classname
+        command = method + " " + classname + " " + args
         self.onecmd(command)
         return command
 
