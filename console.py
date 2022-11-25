@@ -3,6 +3,7 @@
 
 """ Entry point for the command interpreter """
 import cmd
+import re
 from models.base_model import BaseModel
 from models.state import State
 from models.user import User
@@ -19,6 +20,32 @@ class HBNBCommand(cmd.Cmd):
         Inherits from Cmd class
     """
     prompt = '(hbnb) '
+    __class_list = [
+        "BaseModel",
+        "User",
+        "State",
+        "Place",
+        "Amenity",
+        "Review",
+        "City"
+        ]
+
+    def default(self, line):
+        """ Gets command if the command is not caught by any other command """
+        self._precmd(line)
+
+    def _precmd(self, line):
+        """Catches commands with class.command() syntax"""
+        match = re.search(r'^(\w*)\.(\w+)(?:\(([^)]*)\))', line)
+        if not match:
+            return line
+
+        classname = match.group(1)
+        method = match.group(2)
+        args = match.group(3)
+        command = method + " " + classname
+        self.onecmd(command)
+        return command
 
     def do_create(self, arg):
         """ Creates a new instance of BaseModel, saves it
@@ -44,19 +71,11 @@ class HBNBCommand(cmd.Cmd):
         """ Prints the string representation of an instance based
 on the class name and id.
         """
-        class_list = [
-            "BaseModel",
-            "User",
-            "State",
-            "Place",
-            "Amenity",
-            "Review",
-            "City"]
         if arg is None or arg == '':
             print('** class name missing **')
         else:
             args = arg.split()
-            if args[0] not in class_list:
+            if args[0] not in HBNBCommand.__class_list:
                 print("** class doesn't exist **")
             elif len(args) < 2:
                 print("** instance id missing **")
@@ -75,19 +94,11 @@ on the class name and id.
             Usage:
                 destroy <name of class> <id of object>
         """
-        class_list = [
-            "BaseModel",
-            "User",
-            "State",
-            "Place",
-            "Amenity",
-            "Review",
-            "City"]
         if arg is None or arg == '':
             print("** class name missing **")
         else:
             args = arg.split()
-            if args[0] not in class_list:
+            if args[0] not in HBNBCommand.__class_list:
                 print("** class doesn't exist **")
             elif len(args) < 2:
                 print("** instance id missing **")
@@ -108,19 +119,11 @@ on the class name and id.
                 all - prints all objects
                 all <class name> - prints all instances of <class name>
         """
-        class_list = [
-            "BaseModel",
-            "User",
-            "State",
-            "Place",
-            "Amenity",
-            "Review",
-            "City"]
         if arg is None or arg == '':
             for k, v in storage.all().items():
                 print(v)
         else:
-            if arg in class_list:
+            if arg in HBNBCommand.__class_list:
                 for k, v in storage.all().items():
                     class_name = k.split('.')
                     if class_name[0] == arg:
@@ -149,7 +152,7 @@ on the class name and id.
             print("** class name missing **")
         else:
             args = arg.split(maxsplit=3)
-            if args[0] not in class_list:
+            if args[0] not in HBNBCommand.__class_list:
                 print("** class doesn't exist **")
             elif len(args) < 2:
                 print("** instance id missing **")
